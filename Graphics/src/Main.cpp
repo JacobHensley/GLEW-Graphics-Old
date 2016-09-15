@@ -3,9 +3,11 @@
 #include <GLFW/glfw3.h>
 #include "utils/FileUtils.h"
 #include "graphics/Shader.h"
-#include "graphics\IndexBuffer.h"
-#include "graphics\Buffer.h"
-#include "graphics\VertexArray.h"
+#include "graphics/IndexBuffer.h"
+#include "graphics/Buffer.h"
+#include "graphics/VertexArray.h"
+#include "math/math.h"
+
 
 int main() {
 	if (!glfwInit())
@@ -36,6 +38,8 @@ int main() {
 		2, 3, 0
 	};
 
+	mat4 matrix = mat4::Translate(vec3(0.1f, -0.25f, 0.0f));
+
 	VertexArray vertexArray;
 	IndexBuffer ibo = IndexBuffer(indices, 6);
 	vertexArray.addBuffer(new Buffer(vertices, 4 * 3, 3), 0);
@@ -46,14 +50,23 @@ int main() {
 	Shader shader("Shaders/shader.vert", "Shaders/shader.frag");
 	shader.Bind();
 
-	int location = glGetUniformLocation(shader.GetID(), "u_Color");
-	ASSERT(location != -1);
-	glUniform4f(location, 1.0f, 0.0f, 0.0f, 1.0f); 
+	shader.SetUniform4f("u_Color", 1.0f, 0.0f, 0.0f, 1.0f);
+	shader.SetUniformMat4("u_Matrix", matrix);
+
+	float x = -1;
+	float y = 1;
+
+	float r = 0.0f, g = 0.0f, b = 0.0f;
 
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		shader.SetUniformMat4("u_Matrix", mat4::Translate(vec3(x, y, 0.0f)));
+		shader.SetUniform4f("u_Color", r, x, y, 1.0f);
 		ibo.draw();
+
+		x +=  0.005;
+		y += -0.005;
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

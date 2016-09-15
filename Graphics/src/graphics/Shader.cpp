@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <vector>
 #include "utils/FileUtils.h"
+#include "math/math.h"
 
 Shader::Shader(const String& vertPath, const String& fragPath) 
  : m_VertPath(vertPath), m_FragPath(fragPath)
@@ -77,4 +78,51 @@ uint Shader::Load()
 	glDeleteShader(fragment);
 
 	return program;
+}
+
+int Shader::GetUnifromLocation(const String& name)
+{
+	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
+		return m_UniformLocationCache[name];
+
+	int location = glGetUniformLocation(m_ShaderID, name.c_str());
+	ASSERT(location != -1);
+	m_UniformLocationCache[name] = location;
+	return location;
+}
+
+void Shader::SetUniform1i(const String & name, int value)
+{
+	glUniform1i(GetUnifromLocation(name), value);
+}
+
+void Shader::SetUniform1f(const String& name, float value)
+{
+	glUniform1f(GetUnifromLocation(name), value);
+}
+
+void Shader::SetUniform2f(const String& name, const vec2& vec)
+{
+	glUniform2f(GetUnifromLocation(name), vec.x, vec.y);
+}
+
+void Shader::SetUniform3f(const String& name, const vec3& vec)
+{
+	glUniform3f(GetUnifromLocation(name), vec.x, vec.y, vec.z);
+}
+
+void Shader::SetUniformVec4(const String& name, const vec4& vec)
+{
+	SetUniform4f(name, vec.x, vec.y, vec.z, vec.w);
+}
+
+
+void Shader::SetUniform4f(const String& name, float x, float y, float z, float w)
+{
+	glUniform4f(GetUnifromLocation(name), x, y, z, w);
+}
+
+void Shader::SetUniformMat4(const String& name, const mat4& matrix)
+{
+	glUniformMatrix4fv(GetUnifromLocation(name), 1, GL_TRUE, matrix.elements);
 }
