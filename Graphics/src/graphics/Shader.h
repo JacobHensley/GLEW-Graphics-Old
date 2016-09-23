@@ -16,7 +16,7 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
-	int GetUnifromLocation(const String& name);
+	int GetUniformLocation(const String& name);
 
 	void SetUniform1i(const String& name, int value);
 	void SetUniform1f(const String& name, float value);

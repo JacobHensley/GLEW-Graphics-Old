@@ -80,7 +80,7 @@ uint Shader::Load()
 	return program;
 }
 
-int Shader::GetUnifromLocation(const String& name)
+int Shader::GetUniformLocation(const String& name)
 {
 	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
 		return m_UniformLocationCache[name];
@@ -93,22 +93,22 @@ int Shader::GetUnifromLocation(const String& name)
 
 void Shader::SetUniform1i(const String & name, int value)
 {
-	glUniform1i(GetUnifromLocation(name), value);
+	glUniform1i(GetUniformLocation(name), value);
 }
 
 void Shader::SetUniform1f(const String& name, float value)
 {
-	glUniform1f(GetUnifromLocation(name), value);
+	glUniform1f(GetUniformLocation(name), value);
 }
 
 void Shader::SetUniform2f(const String& name, const vec2& vec)
 {
-	glUniform2f(GetUnifromLocation(name), vec.x, vec.y);
+	glUniform2f(GetUniformLocation(name), vec.x, vec.y);
 }
 
 void Shader::SetUniform3f(const String& name, const vec3& vec)
 {
-	glUniform3f(GetUnifromLocation(name), vec.x, vec.y, vec.z);
+	glUniform3f(GetUniformLocation(name), vec.x, vec.y, vec.z);
 }
 
 void Shader::SetUniformVec4(const String& name, const vec4& vec)
@@ -119,10 +119,10 @@ void Shader::SetUniformVec4(const String& name, const vec4& vec)
 
 void Shader::SetUniform4f(const String& name, float x, float y, float z, float w)
 {
-	glUniform4f(GetUnifromLocation(name), x, y, z, w);
+	glUniform4f(GetUniformLocation(name), x, y, z, w);
 }
 
 void Shader::SetUniformMat4(const String& name, const mat4& matrix)
 {
-	glUniformMatrix4fv(GetUnifromLocation(name), 1, GL_TRUE, matrix.elements);
+	glUniformMatrix4fv(GetUniformLocation(name), 1, GL_TRUE, matrix.elements);
 }
