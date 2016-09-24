@@ -8,7 +8,8 @@
 #include "graphics/VertexArray.h"
 #include "math/math.h"
 #include "graphics/stb_image.h"
-#include "graphics\Texture.h"
+#include "graphics/Texture.h"
+
 int main() {
 	if (!glfwInit())
 		return 1;
