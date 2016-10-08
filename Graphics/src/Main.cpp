@@ -9,20 +9,16 @@
 #include "math/math.h"
 #include "graphics/stb_image.h"
 #include "graphics/Texture.h"
+#include "graphics/Window.h"
+
+void OnWindowResize(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+	// update Orthographic mat4
+}
 
 int main() {
-	if (!glfwInit())
-		return 1;
 
-	GLFWwindow* window = glfwCreateWindow(1280, 720, "Test", nullptr, nullptr);
-	if (!window)
-		return 2;
-
-	glfwMakeContextCurrent(window);
-
-	if (glewInit() != GLEW_OK) {
-		return 3;
-	}
+	Window window = Window("Test", 1280, 720);
 
 	glClearColor(0.2f, 0.3f, 0.8f, 1.0f);
 
@@ -30,16 +26,19 @@ int main() {
 	{
 		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
 		-0.5f,  0.5f, 0.0f, 0.0f, 0.0f,
-		 0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
-		 0.5f, -0.5f, 0.0f, 1.0f, 1.0f
+		0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
+		0.5f, -0.5f, 0.0f, 1.0f, 1.0f
 	};
-	
+
 	uint indices[] = {
 		0, 1, 2,
 		2, 3, 0
 	};
 
 	mat4 matrix = mat4::Translate(vec3(0.0f, 0.0f, 0.0f));
+
+	mat4 ortho = mat4::Orthographic(16, -16, -9, 9, -1, 1000.0f);
+	mat4 prespective = mat4::Perspective(65.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
 
 	VertexArray vertexArray;
 	IndexBuffer ibo = IndexBuffer(indices, 6);
@@ -55,17 +54,22 @@ int main() {
 
 	shader.SetUniform1i("u_Texture", 0);
 
-	shader.SetUniformMat4("u_Matrix", matrix);
+	shader.SetUniformMat4("u_ProjMatrix", prespective);
+	shader.SetUniformMat4("u_ModelMatrix", matrix);
 
-	while (!glfwWindowShouldClose(window)) {
-		glClear(GL_COLOR_BUFFER_BIT);
+	float z = 0.0f;
 
+	while (!window.closed()) {
+		window.clear();
+
+		z -= 0.01f;
+		matrix = mat4::Translate(vec3(0.0f, 0.0f, z));
+		shader.SetUniformMat4("u_ModelMatrix", matrix);
 		ibo.draw();
 
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		window.update();
 	}
 
-	glfwTerminate();
+	window.~Window();
 	return 0;
 }

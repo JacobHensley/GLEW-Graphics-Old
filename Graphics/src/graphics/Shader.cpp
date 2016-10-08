@@ -8,6 +8,7 @@ Shader::Shader(const String& vertPath, const String& fragPath)
  : m_VertPath(vertPath), m_FragPath(fragPath)
 {	
 	m_ShaderID = Load();
+	std::cout << m_ShaderID << std::endl;
 	ASSERT(m_ShaderID);
 }
 
@@ -28,11 +29,13 @@ void Shader::Unbind() const
 uint Shader::Load()
 {
 	uint program = glCreateProgram();
+	
 	uint vertex = glCreateShader(GL_VERTEX_SHADER);
 	uint fragment = glCreateShader(GL_FRAGMENT_SHADER);
 
 	String vertexSrc = ReadFile(m_VertPath);
 	String fragmentSrc = ReadFile(m_FragPath);
+
 	const char* vs = vertexSrc.c_str();
 
 	glShaderSource(vertex, 1, &vs, NULL);

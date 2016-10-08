@@ -135,6 +135,7 @@
     <ClCompile Include="src\graphics\stb_image.cpp" />
     <ClCompile Include="src\graphics\Texture.cpp" />
     <ClCompile Include="src\graphics\VertexArray.cpp" />
+    <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\math\mat4.cpp" />
     <ClCompile Include="src\math\vec2.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="src\graphics\stb_image.h" />
     <ClInclude Include="src\graphics\Texture.h" />
     <ClInclude Include="src\graphics\VertexArray.h" />
+    <ClInclude Include="src\graphics\Window.h" />
     <ClInclude Include="src\math\mat4.h" />
     <ClInclude Include="src\math\math.h" />
     <ClInclude Include="src\math\maths_func.h" />
